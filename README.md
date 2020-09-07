@@ -1,18 +1,21 @@
 # blog
 
 ### Using python Django
+
+![URLS_VIEWS](./img/django0.png)
+
 ---
 ---
 ## Chapter 1:
- #### Install djanjo in python using pip.
+- ### Install djanjo in python using pip.
  ```
  pip install Django
  ```
- #### Create the new project.
+- ### Create the new project.
  ```
    django-admin Startproject blog
  ```
- #### to run project localhost.
+- ### To run project localhost.
  ```
   python manage.py runserver
  ```
@@ -20,7 +23,7 @@
  ## Chapter 2:
  ![URLS_VIEWS](./img/django1.png)
  
-### URLS python file:
+- ### URLS python file:
 ```python
 from django.contrib import admin
 from django.urls import path, include
@@ -34,7 +37,7 @@ urlpatterns = [
 
 ]
 ```
-### VIEWS python file:
+- ### VIEWS python file:
 ```python
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -49,6 +52,24 @@ def homepage(request):
     return render(request, 'home.html')
 ```
 The requesr go to urls python file and search for correct url and relevant view function is called which render the html file and send a response.
+## Chapter 3:
 
+ #### A big project can be splited into different modules called as Django app.
 
+- ### Create the new app inside the project.
+ ```
+   python manage.py startapp articles
+ ```
+By usintg this command new folder and files will be created representing the articles part of the project.
+ ***
+## Chapter 4:
+
+ #### Model is.
+
+- ### Create the new app inside the project.
+ ```
+   python manage.py startapp articles
+ ```
+By usintg this command new folder and files will be created representing the articles part of the project.
+ ***
 
