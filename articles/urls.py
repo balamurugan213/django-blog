@@ -16,15 +16,17 @@ Including another URLconf
 
 
 # from django.contrib import admin
-from django.urls import path
-from .import views
+from django.urls import path, re_path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from .import views
 
+app_name = 'article'
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path(r'about/', views.about),
-    path(r'', views.articleHomepage)
+    path(r'', views.articleHomepage, name="list"),
+    re_path(r'(?P<slug>[\w-]+)/$', views.articleDetailpage, name="detail")
 
 ]
 
