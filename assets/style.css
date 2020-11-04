@@ -23,3 +23,8 @@ a:visited {
 	color: #fff;
 	text-decoration: none;
 }
+
+.dimg{
+	height: 60vh;
+	width: 100vw;
+}

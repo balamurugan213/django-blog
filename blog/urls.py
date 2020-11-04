@@ -27,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # url(r, 'articles/', include('articles.urls')),
     path('articles/', include('articles.urls')),
+    path('accounts/', include('accounts.urls')),
     path(r'about/', views.about),
     path(r'', views.homepage)
 

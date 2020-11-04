@@ -1,9 +1,13 @@
+
 {% extends 'baseLayout.html' %} {% block content %}
 <div class="article-detail">
 	<div class="article">
-		<img src="{{article.thumb.url}}" alt="" />
+		<div class="dimg"
+		style="background-image:url({{article.thumb.url}});">
+		</div>
 		<h2>{{article.title}}</h2>
 		<p>{{article.body}}</p>
+		<a href="{{article.link}}"><p>Visit Page: {{article.link}}</p></a>
 		<h4>{{article.date}}</h4>
 	</div>
 </div>

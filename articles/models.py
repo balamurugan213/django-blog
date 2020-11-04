@@ -8,6 +8,7 @@ class Article(models.Model):
     slug = models.SlugField()
     date = models.DateField(auto_now_add=True)
     body = models.TextField()
+    link=  models.CharField(max_length=300,default='Unavailable')
     thumb = models.ImageField(default='default.png', blank=True)
     #
 
@@ -15,4 +16,4 @@ class Article(models.Model):
         return self.title
 
     def snippet(self):
-        return self.body[:50]
+        return self.body[:150]

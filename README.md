@@ -68,7 +68,7 @@ def homepage(request):
 
 The requesr go to urls python file and search for correct url and relevant view function is called which render the html file and send a response.
 
-## Chapter 3:
+## Chapter 3: Django app
 
 #### A big project can be splited into different modules called as Django app.
 
@@ -86,7 +86,7 @@ This folder contains its own views.py(you can create its own urls.py and Templat
 
 ---
 
-## Chapter 4:
+## Chapter 4: Model
 
 #### Model is a object used to store data in the database and retrive it.
 
@@ -137,7 +137,7 @@ After any change in the migration i.e change in model or adding new module we ne
 
 ---
 
-## Chapter 5:
+## Chapter 5: Django ORM
 
 #### Django ORM is used to communicate or intercte with database.
 
@@ -183,10 +183,15 @@ After any change in the migration i.e change in model or adding new module we ne
    def __str__(self):
        return self.title
 ```
+- We can use modal methods which will help in customizing the data and to other functionality.
 
+```python
+   def snippet(self):
+       return self.body[:50]...
+```
 ---
 
-## Chapter 6:
+## Chapter 6: Django admin
 
 #### We can control the content of a site using **Django admin**
 
@@ -220,7 +225,7 @@ admin.site.register(Article)
 
 ---
 
-## Chapter 7:
+## Chapter 7:  Template Tags
 
 ### We can send the data to the Html file and present according to the data using the templae tags.
 
@@ -279,7 +284,7 @@ def snippet(self):
 
 ---
 
-## Chapter 8:
+## Chapter 8: Static files
 
 ### We can use the static files like css and images be explicting setting the static file .
 
@@ -287,13 +292,6 @@ def snippet(self):
 
 ```python
  from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-# urlpatterns = [
-#     # path('admin/', admin.site.urls),
-#     path(r'about/', views.about),
-#     path(r'', views.articleHomepage)
-
-# ]
 
 urlpatterns += staticfiles_urlpatterns()
 ```
@@ -306,6 +304,83 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'assets')
 ]
+```
+
+---
+## Chapter 9: URL patterns
+
+### We can create our own url pattern to capture the a url with perticular pattern and we can send that captured url to view file which will customize the output with respective to the url .
+
+
+-  #### URLS file .
+   - Add a re_path will a regular expression. 
+```python
+ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+urlpatterns = [
+
+    # path('admin/', admin.site.urls),
+    # path(r'about/', views.about),
+    # path(r'', views.articleHomepage, ),
+
+    re_path(r'(?P<slug>[\w-]+)/$', views.articleDetailpage)
+
+]
+
+```
+
+- #### VIEWS python file : 
+
+  - In views file add the module for the url pattens with a pattern a function argument .
+
+```python
+from django.http import HttpResponse
+from django.shortcuts import render
+
+def articleDetailpage(request, slug):
+    # return HttpResponse(slug)
+    # articles = Article.objects.all().order_by('date')
+    # return render(request, 'articles/articleHome.html', {'articles': articles})
+    article = Article.objects.get(slug=slug)
+    return render(request, 'articles/articleDetail.html', {'article': article})
+```
+
+---
+## Chapter 9: Named URL
+
+### We can add names to the url and use it in the html page instead of hard coding the url  .
+
+-  ### URLS file .
+    - Add third parameter to the path with name as identifiers. 
+
+```python
+
+app_name = 'article'
+
+urlpatterns = [
+    # path('admin/', admin.site.urls),
+    path(r'about/', views.about),
+    path(r'', views.articleHomepage, name="list"),
+    re_path(r'(?P<slug>[\w-]+)/$', views.articleDetailpage, name="detail")
+
+]
+
+```
+
+- ### In HTML file : 
+  - Use the name of the url in the href of the element .
+
+```html
+{% for article in articles %}
+	<div class="article">
+		<h2>
+      <a href="{% url 'article:detail' slug=article.slug%}">
+				{{article.title}}
+			</a>
+		</h2>
+		<p>{{article.snippet}}..</p>
+	</div>
+	{% endfor %}
 ```
 
 ---
