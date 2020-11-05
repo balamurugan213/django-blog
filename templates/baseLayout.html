@@ -12,6 +12,17 @@
 	<body>
 		<div class="wrapper">
 			<!-- <h1><a href="{} "></a></h1> -->
+			<h1><a href="">Articate</a></h1>
+			<nav>
+				<ul>
+					<li>
+						<form class="logiut-link" action="{% url 'accounts:logout' %}" method="POST">
+							{% csrf_token %}
+							<button type="submit">Logout</button>
+						</form>
+					</li>
+				</ul>
+			</nav>
 			{% block content %} {% endblock %}
 		</div>
 	</body>

@@ -384,3 +384,33 @@ urlpatterns = [
 ```
 
 ---
+## Chapter 9: Upload Media
+
+### We can add media to the database and store it in some file location.The process is similar to adding a static files.
+
+-  ### Setting.py File.
+
+    - Add Media url and media root path. 
+
+```python
+
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+```
+
+- ### In urls.py file : 
+
+  - Use the name of the url in the href of the element .
+
+```python
+from django.conf.urls.static import static
+from django.conf import settings
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+```
+
+---
