@@ -26,7 +26,9 @@ urlpatterns = [
     # path('admin/', admin.site.urls),
     path(r'about/', views.about),
     path(r'', views.articleHomepage, name="list"),
+    re_path(r'create', views.articleCreate, name="create"),
     re_path(r'(?P<slug>[\w-]+)/$', views.articleDetailpage, name="detail")
+
 
 ]
 

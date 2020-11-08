@@ -414,3 +414,218 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
 
 ---
+## Chapter 10.0: Auth fuctions
+
+### We can perform the authenciate function like login and signup.
+
+-  #### Create a new app called startapp in command.
+
+-  #### Add the accounts app in the INSTALLED_APPS in the settings.py.
+
+-  #### Add necessary field in the views and urls.py .
+
+
+### Full Code.
+
+-  ### views.py File.
+
+```python
+from django.shortcuts import render ,redirect
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+from django.contrib.auth import login,logout
+# Create your views here.
+
+def signup_view(request):
+    # return HttpResponse("about")
+    if request.method == 'POST': 
+        form=UserCreationForm(request.POST)
+        if form.is_valid():
+            user=form.save()
+            #log the user
+            login(request,user)
+            return redirect('article:list')
+    else:
+        form=UserCreationForm()
+        return render(request, 'accounts/signup.html',{'form':form})
+
+def login_view(request):
+    # return HttpResponse("about")
+    if request.method == 'POST': 
+        form=AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            # form.save()
+            #log the user
+            user=form.get_user()
+            login(request,user)
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
+            else: 
+                return redirect('article:list')
+        else:
+            return render(request, 'accounts/login.html',{'form':form})
+    else:
+        form=AuthenticationForm()
+        return render(request, 'accounts/login.html',{'form':form})
+
+def logout_view(request):
+    # return HttpResponse("about")
+    if request.method == 'POST': 
+        logout(request)
+        return redirect('article:list')
+
+``` 
+
+- ### In urls.py file: 
+
+```python
+
+from django.urls import path, re_path
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from .import views
+# from django.contrib import admin
+
+app_name = 'accounts'
+
+urlpatterns = [
+    # path('admin/', admin.site.urls),
+    path(r'signup/', views.signup_view,name='signup'),
+    path(r'login/', views.login_view,name='login'),
+    path(r'logout/', views.logout_view,name='logout'),
+    # re_path(r'(?P<slug>[\w-]+)/$', views.articleDetailpage, name="detail")
+
+]
+
+urlpatterns += staticfiles_urlpatterns()
+
+```
+
+## User creation Form in Django
+
+-  ### ther is a builtin module called user creation form for to get the signup info .
+
+```python
+# import user creation form
+ from django.contrib.auth.forms import UserCreationForm
+
+ #create a user creation form
+ form=UserCreationForm()
+
+# pass the form in render template return
+return render(request, 'accounts/signup.html',{'form':form})
+
+``` 
+
+-  #### The form variable can by used in between html form tag to get the details.
+
+```html
+<!-- user the form -->
+{% extends 'baseLayout.html' %}
+{% block content %}
+  <h1>Signup</h1>
+  <form class="site-form" action="{% url 'accounts:signup' %}" method="post">
+    <!-- csrf is user for security -->
+      {% csrf_token %}
+      {{form}}
+      <input type="submit" value="Signup">
+  </form>
+{% endblock %}
+
+```
+-  #### The signup.html is called when user located to the signup which is a form of get request.
+
+-  #### When signup form is submitted we submit it as a post request to same url.
+---
+
+```python
+# check for the post request
+ if request.method == 'POST': 
+    form=UserCreationForm(request.POST)
+    # check for valid form
+    if form.is_valid():
+      # add user
+        user=form.save()
+        #log the user
+        login(request,user)
+        # go to home page
+        return redirect('article:list')
+``` 
+
+## Login Form in Django.
+
+-  ### ther is a builtin module called user creation form for to get the signup info.
+
+
+```python
+# import user Authenticationform
+ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+
+ #create a authenticate form
+  form=AuthenticationForm()
+       
+
+# pass the form in render template return
+ return render(request, 'accounts/login.html',{'form':form})
+
+``` 
+
+-  #### The form variable can by used in between html form tag to get the details.
+
+
+```html
+<!-- user the form -->
+{% extends 'baseLayout.html' %}
+{% block content %}
+  <h1>Login</h1>
+  <form class="site-form" action="{% url 'accounts:login' %}" method="post">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" value="Login">
+  </form>
+{% endblock %}
+
+```
+
+-  #### The login.html is called when user located to the login which is a form of get request.
+
+- #### When login form is submitted we submit it as a post request to same url.
+
+- #### Ther is a built in module login to login the user .
+
+```python
+
+# check for the post request
+ if request.method == 'POST': 
+    form=AuthenticationForm(data=request.POST)
+    if form.is_valid():
+        # create a user
+        user=form.get_user()
+        # log the user in
+        login(request,user)
+        return redirect('article:list')
+``` 
+
+## Logout users in Django
+
+-  ### ther is a builtin module called user creation form for to get the signup info .
+
+```python
+def logout_view(request):
+    if request.method == 'POST': 
+        logout(request)
+        return redirect('article:list')
+
+``` 
+-  #### The form variable can by used in between html form tag to get the details .
+
+```html
+<!-- add the logout tag-->
+<form class="logiut-link" action="{% url 'accounts:logout' %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+
+```
+
+## Login Must pages in Django.
+
+-  ### There are few html pages which requires login to view that page.
