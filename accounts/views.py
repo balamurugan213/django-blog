@@ -12,6 +12,9 @@ def signup_view(request):
             #log the user
             login(request,user)
             return redirect('article:list')
+        else:
+            return render(request, 'accounts/signup.html',{'form':form})
+        
     else:
         form=UserCreationForm()
         return render(request, 'accounts/signup.html',{'form':form})
